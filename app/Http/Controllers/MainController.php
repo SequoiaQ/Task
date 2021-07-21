@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
@@ -31,10 +33,19 @@ class MainController extends Controller
     }
 
     public function fileUpload(Request $req){
-    
+        $formData = $req->validate([
+            'name' => 'required',
 
-            $fileName = time().'_'.$req->file->getClientOriginalName();
-            $filePath = $req->file('file')->storeAs('uploads', $fileName, 'public');
+        ]);
+        $attachment = new Attachment();
+
+        $fileName = time().'_'.$req->file->getClientOriginalName();
+        $filePath = $req->file('file')->storeAs('uploads', $fileName, 'public');
+
+        $attachment->filename = $formData['name'];
+        $attachment->url = Storage::url($filePath);
+        $attachment->local_path = $filePath;
+        $attachment->save();
 
         return "файл успешно отправлен";
    }

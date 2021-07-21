@@ -21,7 +21,7 @@
     <p>Повтор пароля:<br>
         <input name ="pwag" type="text">
     </p>
-    <button class = "btn registered" id="submit">Reg</button>
+    <button class = "btn registered" id="submit">Registration</button>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -62,6 +62,7 @@
             </div>
           @endif
     
+          <input name="name" class="form-control" placeholder="Название файла">
     
                 <div class="custom-file">
                     <input type="file" name="file" class="custom-file-input" id="chooseFile">
