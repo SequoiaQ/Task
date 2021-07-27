@@ -2,7 +2,6 @@
 <head>
   
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -16,33 +15,27 @@
 
 
     
-<table id="table_id" class="dataTable">
+<table id="table_id" class="dataTable" >
     <thead>
         <tr>
             <th>ID</th> 
             <th>File name</th>
             <th>Local path</th>
+            <th>Save</th>
         </tr>
-
-      @foreach ($attachment as $row)
-          <tr>
-            <td>{{$row['id']}}</td>
-            <td>{{$row['filename']}}</td>
-            <td>{{$row['local_path']}}</td>
-          </tr>
-          @endforeach
-
     </thead>
     <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
+      @foreach ($attachment as $row)
+          <tr>
+          <td>{{$row['id']}}</td>
+          <td>{{$row['filename']}}</td>
+          <td>{{$row['local_path']}}</td>
+          <td><a download="/storage/{{$row['local_path']}}" href="/storage/{{$row['local_path']}}" class="btn btn-primary" >Save</a>
+          </button>
         </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-        </tr>
-    </tbody>
+      @endforeach
+</tbody>
+    </thead>
 </table>
 
 
@@ -101,39 +94,80 @@
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+  integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+  integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 
-const myUploadForm = document.getElementById('fileUpload')
+  const myUploadForm = document.getElementById('fileUpload')
 
-$.ajaxSetup({
-   headers: {
-       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-   }
-});
+  $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+  });
 
-const myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
-    
-    $('#fileUpload').on('submit',function(e){
-            e.preventDefault();
-    
-            const formData = new FormData(this);
-            console.log(formData.keys());
 
-            $.ajax({
-                processData: false,
-                contentType: false,
-              url: "/upload-file",
-              type:"POST",
-              data: formData,
-              success:function(response){
-                alert(response);
-              },
-              });
-     myModal.hide();
-            });
-          </script>
+  function fetchingTable() {
+      $.ajax({
+          processData: false,
+          contentType: false,
+          url: "/fetchingTable",
+          type: "GET",
+          dataType: "json",
+          success: function (response) {
+            console.log(response)
+              //console.log(response.attachment);
+              $('tbody').html('')
+              $.each(response.attachment, function (key, item) {
+                  $('tbody').append(`
+                    <tr>
+                      <td>${item.id}</td>
+                      <td><a href="/storage/${item.local_path}" download="/storage/${item.local_path}">${item.filename}</a></td>
+                      <td>${item.local_path}</td>
+                      <td><a href="/storage/${item.local_path}" download="/storage/${item.local_path}" class="btn btn-primary" >save</a></td>
+                    </tr>`);
+              })
+          }
+      })
+  }
+
+  const myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
+
+  $('#fileUpload').on('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      console.log(formData.keys());
+
+      $.ajax({
+          processData: false,
+          contentType: false,
+          url: "/upload-file",
+          type: "POST",
+          data: formData,
+          success: function (response) {
+              alert(response);
+              fetchingTable()
+          },
+      });
+      myModal.hide();
+  });
+
+window.onload = () => {
+  fetchingTable();
+}
+
+
+</script>
+</body>
+
+</html>
 </body>
 </html>

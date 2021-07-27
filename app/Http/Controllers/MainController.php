@@ -14,6 +14,17 @@ class MainController extends Controller
         return view("auth.login");
     }
 
+    public function fetchingTable(){
+        $attachment = Attachment::all();
+        return response()->json([
+            'attachment' => $attachment,
+        ]);
+    }
+
+    /*<td>{{$row['+item.id+']}}</td>\
+    <td>{{$row['+item.filename+']}}</td>\
+    <td>{{$row['+item.local_path+']}}</td>\   */
+
     public function tableOnPage(){
       $attachment = Attachment::all()->toArray();
       return view('auth.login', compact('attachment'));
