@@ -14,27 +14,34 @@ class MainController extends Controller
         return view("auth.login");
     }
 
-    public function fetchingTable(){
+    public function list(){
         $attachment = Attachment::all();
         return response()->json([
             'attachment' => $attachment,
         ]);
     }
 
-    /*<td>{{$row['+item.id+']}}</td>\
-    <td>{{$row['+item.filename+']}}</td>\
-    <td>{{$row['+item.local_path+']}}</td>\   */
-
     public function tableOnPage(){
       $attachment = Attachment::all()->toArray();
-      return view('auth.login', compact('attachment'));
+      return view('attachments.list', compact('attachment'));
 
     } 
+
+    public function delete(Attachment $attachment) {
+        $attachment->delete();
+        return 'Удалено успешно';
+    }
+
+    public function update(Attachment $attachment, Request $request) {
+        $attachment->filename = $request['name'];
+        $attachment->save();
+
+        return 'Файл успешно обновлён';
+    }
 
     public function fileUpload(Request $req){
         $formData = $req->validate([
             'name' => 'required',
-
         ]);
         $attachment = new Attachment();
 

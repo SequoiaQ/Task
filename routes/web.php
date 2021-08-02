@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 
 
-Route::get('/',[MainController::class, 'loginPage'] );
-Route::post('/local', [MainController::class, 'storage']);
-Route::post('/upload-file', [MainController::class, 'fileUpload'])->name('fileUpload');
+
+    /* Файлы */
 Route::get('/', [MainController::class, 'tableOnPage']);
-Route::get('/fetchingTable', [MainController::class, 'fetchingTable']);
+Route::get('/list', [MainController::class, 'list']);
+Route::post('/upload-file', [MainController::class, 'fileUpload'])->name('fileUpload');
+Route::patch('/{attachment}', [MainController::class, 'update']);
+Route::delete('/{attachment}', [MainController::class, 'delete']);
