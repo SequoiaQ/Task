@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class MainController extends Controller
 {
 
-    public function loginPage() {
-        return view("auth.login");
-    }
 
     public function list(){
         $attachment = Attachment::all();
@@ -53,7 +51,7 @@ class MainController extends Controller
         $attachment->local_path = $filePath;
         $attachment->save();
 
-        return "файл успешно отправлен";
+        return 'файл успешно отправлен';
    }
-}
 
+}
