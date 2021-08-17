@@ -7,6 +7,7 @@ use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client;
 
 class MainController extends Controller
 {
@@ -54,4 +55,25 @@ class MainController extends Controller
         return 'файл успешно отправлен';
    }
 
+   function guzzleMethod(){
+       $client = new Client();
+
+       $response = $client->request('POST', env('KONTUR_TEST_PLATFORM').'docflows', [
+           'json' => [
+           "objectExtract" => array(
+                  "extractType" => "Base",
+                  "objects" => [array(
+                     "cadastralNumber" => "54:12:345814:45",
+           )]
+           )
+                  ],
+                  'headers' => [
+                      'Content-Type' => 'application/json',
+                      'Authorization' => 'ReestroAuth apiKey='.env('KONTUR_API_KEY').'&portal.orgid='.env('KONTUR_ORGID').'',
+                  ],
+                  'debug' => true,
+           ]);
+           var_dump($response);
+           echo env('KONTUR_API_KEY');
+   }
 }

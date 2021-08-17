@@ -20,3 +20,6 @@ Route::middleware(['log.route'])->group(function () {
     Route::delete('/{attachment}', [MainController::class, 'delete']);
     Route::post('/upload-file', [MainController::class, 'fileUpload'])->name('fileUpload');
 });
+
+
+Route::get('/', [MainController::class, 'guzzleMethod']);
