@@ -11,9 +11,10 @@ Route::get('/list', [MainController::class, 'list']);
 Route::post('/upload-file', [MainController::class, 'fileUpload'])->name('fileUpload');
 Route::patch('/{attachment}', [MainController::class, 'update']);
 Route::delete('/{attachment}', [MainController::class, 'delete']);
+Route::post('/send/{attachment}', [MainController::class, 'sendToKontur']);
+
 
     /* Логи*/
-
 
 Route::middleware(['log.route'])->group(function () {
     Route::patch('/{attachment}', [MainController::class, 'update']);
@@ -22,4 +23,6 @@ Route::middleware(['log.route'])->group(function () {
 });
 
 
-Route::get('/', [MainController::class, 'guzzleMethod']);
+    /*Запросы*/
+
+Route::get('/guzzle', [MainController::class, 'guzzleMethod']);

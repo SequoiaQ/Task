@@ -150,7 +150,19 @@ function update (id) {
   })
 }
 
-
+function sendToKontur (id) {
+    if (!confirm('Вы действительно хотите отправить файл?')) {
+        return;
+    }
+    $.ajax({
+        url:`/send/${id}`,
+        type:"POST",
+        success: (response) => {
+          alert(response)
+          fetchingTable()
+        }
+    })
+}
 
 function fetchingTable() {
     $.ajax({
@@ -169,6 +181,7 @@ function fetchingTable() {
                     <td>${item.local_path}</td>
                     <td>
                         <button class="btn btn-info" onClick="openUpdateModal(${item.id},'${item.filename}')" >Изменить</button>
+                        <button class="btn btn-info" onClick="sendToKontur(${item.id})">Отправить в Контур</button>
                         <button class="btn btn-danger" onClick="deleteFile(${item.id})">Удалить</button>
                     </td>
                     <td></td>

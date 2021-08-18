@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Log;
 use App\Services\KonturService;
 
 
-class MainController extends Controller
+class RequestsController extends Controller
 {
 
 
     public function list()
     {
-        $attachment = Attachment::all();
+        $attachment = Request::all();
         return response()->json([
             'attachment' => $attachment,
         ]);
@@ -61,10 +61,6 @@ class MainController extends Controller
         return 'файл успешно отправлен';
    }
 
-   public function sendToKontur(Attachment $attachment)
-   {
-    $attachment->sendToKontur();
-   }
 
    function guzzleMethod()
    {
