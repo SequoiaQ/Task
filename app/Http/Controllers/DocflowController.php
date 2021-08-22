@@ -27,4 +27,12 @@ class DocflowController extends Controller
     function refreshDocflow($docflowId) {
         return $this->service->refreshDocflowState($docflowId);
     }
+
+    function createDocflow() {
+        return $this->service->createDocflow();
+    }
+
+    function docflowDownload(){
+        // return $this->service->docflow
+    }
 }
