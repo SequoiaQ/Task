@@ -21,6 +21,8 @@
     </thead>
 </table>
 
+<a href="/doclflowCreate" class="btn btn-success">Создать новый документооборот</a>
+
 <x-scripts></x-scripts>
 <script>
 window.onload = function () {

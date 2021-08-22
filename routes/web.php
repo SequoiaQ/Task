@@ -26,7 +26,7 @@ Route::middleware(['log.route'])->group(function () {
 
     /*Запросы*/
 
-Route::get('/requests', [MainController::class, 'guzzleMethod']);
+Route::get('/doclflowCreate', [DocflowController::class, 'createDocflow']);
 Route::get('/docflows', [DocflowController::class, 'list']);
 Route::get('/docflowsJson', [DocflowController::class, 'listJson']);
 Route::get('/refreshDocflow/{docflowId}', [DocflowController::class, 'refreshDocflow']);
