@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReestrRequestTable extends Migration
+class CreateDocflowTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateReestrRequestTable extends Migration
      */
     public function up()
     {
-        Schema::create('reestr_request', function (Blueprint $table) {
+        Schema::create('docflows', function (Blueprint $table) {
             $table->id();
+            $table->string('docflow_id')->nullable(false);
+            $table->string('docflow_state')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateReestrRequestTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reestr_request');
+        Schema::dropIfExists('docflows');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocflowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Log;
@@ -25,4 +26,5 @@ Route::middleware(['log.route'])->group(function () {
 
     /*Запросы*/
 
-Route::get('/guzzle', [MainController::class, 'guzzleMethod']);
+Route::get('/requests', [MainController::class, 'guzzleMethod']);
+Route::get('/docflows', [DocflowController::class, 'list']);

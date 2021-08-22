@@ -12,8 +12,11 @@ use App\Services\KonturService;
 
 class MainController extends Controller
 {
-
-
+    function __construct()
+    {
+        $this->service = new KonturService();
+    }
+    //Отображение списка
     public function list()
     {
         $attachment = Attachment::all();
@@ -22,6 +25,7 @@ class MainController extends Controller
         ]);
     }
 
+    //Таблица БД
     public function tableOnPage()
     {
       $attachment = Attachment::all()->toArray();
@@ -29,12 +33,14 @@ class MainController extends Controller
 
     } 
 
+    //Кнопка удаления
     public function delete(Attachment $attachment)
     {
         $attachment->delete();
         return 'Удалено успешно';
     }
 
+    
     public function update(Attachment $attachment, Request $request)
     {
         $attachment->filename = $request['name'];
@@ -68,8 +74,7 @@ class MainController extends Controller
 
    function guzzleMethod()
    {
-    $Service = new KonturService();
-    $Service->createDocflow();
+        return $this->service->createDocflow();
    }
 
 }
