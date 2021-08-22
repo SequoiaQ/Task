@@ -29,7 +29,8 @@ class DocflowController extends Controller
     }
 
     function createDocflow() {
-        return $this->service->createDocflow();
+        $this->service->createDocflow();
+        return back();
     }
 
     function docflowDownload(){
