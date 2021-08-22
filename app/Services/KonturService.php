@@ -34,11 +34,22 @@ class KonturService
         ]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
         $docflowInstance = new Docflow();
+        $docflowInstance->docflow_state = $responseBody['docflowState'];
         $docflowInstance->docflow_id = $responseBody['docflowId'];
         $docflowInstance->save();
         return 'Docflow saved';
     }
 
+    public function refreshDocflowState($docflowId) {
+        $response = $this->client->request('GET',"docflows/{$docflowId}");
+
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $docflowInstance = Docflow::where(['docflow_id' => $docflowId])->first();
+        $docflowInstance->docflow_state = $responseBody['docflowState'];
+        $docflowInstance->save();
+
+        return "Данные обновлены";
+    }
     public function sendDocflow($docflowId)
     {
         $response = $this->client->request('POST', "docflows/{$docflowId}/send", [

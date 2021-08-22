@@ -61,11 +61,4 @@ class RequestsController extends Controller
         return 'файл успешно отправлен';
    }
 
-
-   function guzzleMethod()
-   {
-    $Service = new KonturService();
-    $Service->createDocflow();
-   }
-
 }
