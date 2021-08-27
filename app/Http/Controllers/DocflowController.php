@@ -20,20 +20,29 @@ class DocflowController extends Controller
         ]);
     }
 
-    function listJson() {
+    //Список таблицы
+    function listJson() 
+    {
         return Docflow::all();
     }
 
-    function refreshDocflow($docflowId) {
+    //Обновить состояние документооборота
+    function refreshDocflow($docflowId) 
+    {
         return $this->service->refreshDocflowState($docflowId);
     }
 
-    function createDocflow() {
+    //Создать документооборот
+    function createDocflow()
+    {
         $this->service->createDocflow();
         return back();
     }
 
-    function docflowDownload(){
-        // return $this->service->docflow
+    //Удалить документооборот
+    function deleteDocflow($docflowId)
+    {
+        return $this->service->deleteDocflowId($docflowId);
     }
+
 }

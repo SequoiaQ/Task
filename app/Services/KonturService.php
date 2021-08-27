@@ -5,12 +5,16 @@ namespace App\Services;
 use App\Http\Controllers\Controller;
 use App\Models\Docflow;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
 
-class KonturService
+class KonturService extends Controller
 
 {
     private $client;
-    function __construct() {
+
+    //Констуктор
+    function __construct() 
+    {
         $this->client = new Client([
             'base_uri' =>  env('KONTUR_TEST_PLATFORM'),
             'headers' => [
@@ -20,6 +24,7 @@ class KonturService
         ]);
     }
 
+    //Функция создания документооборота
     public function createDocflow()
     {
         $response = $this->client->request('POST','docflows', [
@@ -40,6 +45,7 @@ class KonturService
         return 'Docflow saved';
     }
 
+    //Функция обновления состояния документооборота
     public function refreshDocflowState($docflowId) {
         $response = $this->client->request('GET',"docflows/{$docflowId}");
 
@@ -50,6 +56,17 @@ class KonturService
 
         return "Данные обновлены";
     }
+
+    //Функция удаления документооборота
+    public function deleteDocflowId($docflowId)
+    {
+        $docflowInstance = Docflow::where(['docflow_id' =>$docflowId])->first();
+        $docflowInstance->delete();
+        
+        return "Данные удалены";
+    }
+
+    //Функция отправки, получения состояния
     public function sendDocflow($docflowId)
     {
         $response = $this->client->request('POST', "docflows/{$docflowId}/send", [
@@ -58,14 +75,33 @@ class KonturService
         return $response->getBody();
     }
 
-    public function getContentId($contentId)
+    //Функция получения конкретного документооборота
+    public function getContentId()
     {
-        $client = $this->client->request('GET','contents/'.$contentId, [
-            'debug' => true,
-            'sink' => '/path/to/file'
+        $docflowid = 'a4308580-cec3-11eb-948a-69a09446260d';
+        $client = new client();
+        $response = $client->request('GET', env('KONTUR_TEST_PLATFORM') . 'docflows/' . $docflowid, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'ReestroAuth apiKey=' . env('KONTUR_API_KEY') . '&portal.orgid=' . env('KONTUR_ORGID').'',
+            ],
         ]);
-        echo($client->getBody());
+        $response = json_decode($response->getBody()->getContents(), true);
+        $this->downloadContent($response["rosreestrResponses"][0]["outdoc"]["content"]["contentId"]);
+    }
 
+    //Функция загрузки результатирующего файла по contentId
+    public function downloadContent($contentId)
+    {
+        $opts = array(
+            'http' => array(
+                'method'  => "GET",
+                'header'  => 'Authorization: ReestroAuth apiKey='.env('KONTUR_API_KEY') . '&portal.orgid=' . env('KONTUR_ORGID'),
+  )
+); 
+        $context = stream_context_create($opts);
+        $contentId = file_get_contents('https://api.testkontur.ru/realty/drive/v2/contents/' . $contentId, false, $context);
+        Storage::disk('local')->put('document.zip', $contentId );
     }
 
 }

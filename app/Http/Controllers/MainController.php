@@ -40,7 +40,7 @@ class MainController extends Controller
         return 'Удалено успешно';
     }
 
-    
+    //Кнопка изменения
     public function update(Attachment $attachment, Request $request)
     {
         $attachment->filename = $request['name'];
@@ -49,6 +49,7 @@ class MainController extends Controller
         return 'Файл успешно обновлён';
     }
 
+    //Кнопка загрузки
     public function fileUpload(Request $req)
     {
         $formData = $req->validate([
@@ -65,16 +66,6 @@ class MainController extends Controller
         $attachment->save();
 
         return 'файл успешно отправлен';
-   }
-
-   public function sendToKontur(Attachment $attachment)
-   {
-    $attachment->sendToKontur();
-   }
-
-   function guzzleMethod()
-   {
-        return $this->service->createDocflow();
    }
 
 }

@@ -17,6 +17,7 @@ class CreateDocflowTable extends Migration
             $table->id();
             $table->string('docflow_id')->nullable(false);
             $table->string('docflow_state')->nullable();
+            $table->string('content_id')->nullable();
             $table->timestamps();
         });
     }
