@@ -76,11 +76,10 @@ class KonturService extends Controller
     }
 
     //Функция получения конкретного документооборота
-    public function getContentId()
+    public function getContentId($docflowId = 'a4308580-cec3-11eb-948a-69a09446260d')
     {
-        $docflowid = 'a4308580-cec3-11eb-948a-69a09446260d';
-        $client = new client();
-        $response = $client->request('GET', env('KONTUR_TEST_PLATFORM') . 'docflows/' . $docflowid, [
+        // FixMe: потереть хедеры ткк client сздается в конструкторе
+        $response = $this->client->request('GET', env('KONTUR_TEST_PLATFORM') . 'docflows/' . $docflowId, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'ReestroAuth apiKey=' . env('KONTUR_API_KEY') . '&portal.orgid=' . env('KONTUR_ORGID').'',
@@ -97,11 +96,13 @@ class KonturService extends Controller
             'http' => array(
                 'method'  => "GET",
                 'header'  => 'Authorization: ReestroAuth apiKey='.env('KONTUR_API_KEY') . '&portal.orgid=' . env('KONTUR_ORGID'),
-  )
-); 
+            )
+        ); 
         $context = stream_context_create($opts);
         $contentId = file_get_contents('https://api.testkontur.ru/realty/drive/v2/contents/' . $contentId, false, $context);
-        Storage::disk('local')->put('document.zip', $contentId );
+        $filename = uniqid().'.zip';
+        Storage::disk('local')->put($filename, $contentId );
+        return $filename;
     }
 
 }

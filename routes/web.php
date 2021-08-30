@@ -57,7 +57,7 @@ Route::get('/doclflowCreate', [DocflowController::class, 'createDocflow']);
 Route::get('/docflows', [DocflowController::class, 'list']);  
 
 //Удаление документооборота
-Route::delete('/docflows', [DocflowController::class, 'deleteDocflowId']);
+Route::delete('/docflows/{docflowId}', [DocflowController::class, 'deleteDocflow']);
 
 //Получение определенного документооборота
 Route::get('/docflowid', [KonturService::class, 'getContentId']);

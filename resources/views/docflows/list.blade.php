@@ -5,7 +5,7 @@
                 <th>ID</th>
                 <th>Docflow-id</th>
                 <th>Docflow-state</th>
-                <th>Content-id</th>
+                <th>Download</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -15,9 +15,10 @@
                     <td>{{ $row['id'] }}</td>
                     <td>{{ $row['docflow_id'] }}</td>
                     <td>{{ $row['docflow_state'] }}</td>
-                    <td>{{ $row['content_id'] }}</td>
-                    <td><a onClick="refreshState('{{ $row['docflow_id'] }}')" class="btn btn-info">Обновить данные</a>
-                    <td><a onClick="deleteDocflowId('{{ $row['docflow_id'] }}')" class="btn btn-danger">Удалить</a>
+                    <td>{{ $row['is_downloaded'] }}</td>
+                    <td>
+                        <a onClick="refreshState('{{ $row['docflow_id'] }}')" class="btn btn-info">Обновить данные</a>
+                        <a onClick="deleteDocflowId('{{ $row['docflow_id'] }}')" class="btn btn-danger">Удалить</a>
                     </td>
                 </tr>
             @endforeach
@@ -43,10 +44,8 @@
                 processData: false,
                 contentType: false,
                 url: `/refreshDocflow/${docflowId}`,
-                type: "GET",
-                dataType: "json",
+                type: "GET",    
                 success: function(response) {
-                    alert(response.data);
                     fetchingTable();
                 }
             })
@@ -70,20 +69,21 @@
             $.ajax({
                 processData: false,
                 contentType: false,
-                url: "/docflows",
+                url: "/docflowsJson",
                 type: "GET",
-                dataType: "json",
                 success: function(response) {
-
                     $('tbody').html('')
-                    $.each(response.attachment, function(key, item) {
+                    $.each(response, function(key, item) {
                         $('tbody').append(`
                   <tr>
                   <td>${item['id']}</td>
-                    <td>${$item['docflow_id']}</td>
-                    <td>${$item['docflow_state']}</td>
-                    <td><a onClick="refreshState('${item['docflow_id']}')" class="btn btn-info">Обновить данные</a> </td>
-                    <td><a onClick="deleteDocflowId('${$item['docflow_id']}')" class="btn btn-danger" >Удалить</a></td>
+                    <td>${item['docflow_id']}</td>
+                    <td>${item['docflow_state']}</td>
+                    <td>${item['is_downloaded']}</td>
+                    <td>
+                        <a onClick="refreshState('${item['docflow_id']}')" class="btn btn-info">Обновить данные</a>
+                        <a onClick="deleteDocflowId('${item['docflow_id']}')" class="btn btn-danger" >Удалить</a>
+                    </td>
                     <a href="('${item['docflowId']}')" class="btn btn-success">Получить файл</a>
                   </tr>`);
                     })

@@ -198,14 +198,6 @@
             });
             uploadModal.hide();
         });
-
-
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         window.onload = () => {
             fetchingTable();
         }
