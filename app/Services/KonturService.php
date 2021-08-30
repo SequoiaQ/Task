@@ -101,7 +101,7 @@ class KonturService extends Controller
         $context = stream_context_create($opts);
         $contentId = file_get_contents('https://api.testkontur.ru/realty/drive/v2/contents/' . $contentId, false, $context);
         $filename = uniqid().'.zip';
-        Storage::disk('local')->put($filename, $contentId );
+        Storage::disk('public')->put($filename, $contentId );
         return $filename;
     }
 

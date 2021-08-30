@@ -74,12 +74,17 @@
                 success: function(response) {
                     $('tbody').html('')
                     $.each(response, function(key, item) {
+                        // Кнопка для скачки (если файл скачан)
+                        let downloadButton = 'Файл не скачан' 
+                        if (item['is_downloaded'] === 1) {
+                            downloadButton = `<a href="/storage/${item['filename']}">Скачать архив</a>`
+                        }
                         $('tbody').append(`
                   <tr>
                   <td>${item['id']}</td>
                     <td>${item['docflow_id']}</td>
                     <td>${item['docflow_state']}</td>
-                    <td>${item['is_downloaded']}</td>
+                    <td>${downloadButton}</td>
                     <td>
                         <a onClick="refreshState('${item['docflow_id']}')" class="btn btn-info">Обновить данные</a>
                         <a onClick="deleteDocflowId('${item['docflow_id']}')" class="btn btn-danger" >Удалить</a>
