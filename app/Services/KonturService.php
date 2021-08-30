@@ -76,7 +76,7 @@ class KonturService extends Controller
     }
 
     //Функция получения конкретного документооборота
-    public function getContentId($docflowId = 'a4308580-cec3-11eb-948a-69a09446260d')
+    public function downloadContentByFlowId($docflowId = 'a4308580-cec3-11eb-948a-69a09446260d')
     {
         // FixMe: потереть хедеры ткк client сздается в конструкторе
         $response = $this->client->request('GET', env('KONTUR_TEST_PLATFORM') . 'docflows/' . $docflowId, [
@@ -86,7 +86,7 @@ class KonturService extends Controller
             ],
         ]);
         $response = json_decode($response->getBody()->getContents(), true);
-        $this->downloadContent($response["rosreestrResponses"][0]["outdoc"]["content"]["contentId"]);
+        return $this->downloadContent($response["rosreestrResponses"][0]["outdoc"]["content"]["contentId"]);
     }
 
     //Функция загрузки результатирующего файла по contentId

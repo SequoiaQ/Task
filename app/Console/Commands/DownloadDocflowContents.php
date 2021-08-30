@@ -44,7 +44,7 @@ class DownloadDocflowContents extends Command
         $docflows = Docflow::where('is_downloaded',0)->where('docflow_state','Processed')->get();
         foreach($docflows as $docflow)
         {
-            $filename = $konturService->downloadContent($docflow['docflow_id']);
+            $filename = $konturService->downloadContentByFlowId($docflow['docflow_id']);
             $docflow['is_downloaded'] = true;
             $docflow['filename'] = $filename;
             $docflow->save();
