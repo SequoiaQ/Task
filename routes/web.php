@@ -51,7 +51,8 @@ Route::middleware(['log.route'])->group(function () {
 */
 
 //Создание документооборота
-Route::get('/doclflowCreate', [DocflowController::class, 'createDocflow']);
+Route::get('/doclflowCreate', [DocflowController::class, 'createDocflow'])->name('createDocflow');
+
 
 //Страница с документооборотом              
 Route::get('/docflows', [DocflowController::class, 'list']);  

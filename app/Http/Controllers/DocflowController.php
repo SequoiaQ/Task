@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateDocflowRequest;
 use App\Models\Docflow;
 use App\Services\KonturService;
-use Illuminate\Http\Request;
+
 
 class DocflowController extends Controller
 {
@@ -33,9 +34,9 @@ class DocflowController extends Controller
     }
 
     //Создать документооборот
-    function createDocflow()
+    function createDocflow(CreateDocflowRequest $request)
     {
-        $this->service->createDocflow();
+        $this->service->createDocflow($request['cadastralNumber']);
         return back();
     }
 

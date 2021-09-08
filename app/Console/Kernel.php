@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-         $schedule->command('docflows:download')->everyTenMinutes();
+         $schedule->command('docflows:download')->everyMinute()->timezone('Asia/Krasnoyarsk');
+         $schedule->call('App\Services\KonturService@refreshAllDocflowStates')->everyMinute()->timezone('Asia/Krasnoyarsk');
     }
 
     /**
