@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Listeners;
+
+use App\Events\CreateDocflowEvent;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
+ 
+
+class CreateDocflowListener
+{
+    public function handle(CreateDocflowEvent $event)
+    {
+        $cadastralNumber = $event->cadastralNumber;
+        $client = new Client([    
+            'base_uri' =>  env('KONTUR_TEST_PLATFORM'),
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'ReestroAuth apiKey='.env('KONTUR_API_KEY').'&portal.orgid='.env('KONTUR_ORGID'). '',
+            ],
+        ]);
+        $response = $client->request('POST',"docflows",[
+            'json' => [
+            "objectExtract" => array(
+                    "extractType" => "Base",
+                    "objects" => [array(
+                        "cadastralNumber" => $cadastralNumber,
+                )], 
+                
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'ReestroAuth apiKey='.env('KONTUR_API_KEY') . '&portal.orgid=' . env('KONTUR_ORGID').'',
+                ],
+            )
+            ],
+        ]);
+
+        $responseContents = $response->getBody()->getContents(); 
+        $responseBody = json_decode($responseContents,true); //Декодирование формата json
+        DB::table('docflows')->insert([
+            'cadastral_number' => $cadastralNumber,
+            'docflow_state' =>  $responseBody['docflowState'],
+            'docflow_id'=> $responseBody['docflowId']
+        ]); 
+    }
+}

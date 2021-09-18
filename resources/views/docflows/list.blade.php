@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="container mt-5">
-                    <form action="{{ route('createDocflow') }}" method="get" id="docflows"
+                    <form action="{{ route('insertDocflow') }}" method="post" id="docflows"
                         enctype="multipart/form-data">
                         <h3 class="text-center mb-5">Введите кадастровый номер: </h3>
                         @csrf
@@ -82,7 +82,6 @@
     </div>
 
     <a href="/doclflowCreate" class="btn btn-success">Создать новый документооборот</a>
-    <a onClick="/doclflowCreate" class="btn btn-success">Создать документооборот</a>
 
     {{-- Документ по определенному docflowId --}}
     <a href="docflowid" class="btn btn-success">Получить документ</a>

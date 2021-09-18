@@ -512,6 +512,7 @@ class ComposerStaticInit9a70811e51d5064e1e8cd624eef65a47
     public static $classMap = array (
         'App\\Console\\Commands\\DownloadDocflowContents' => __DIR__ . '/../..' . '/app/Console/Commands/DownloadDocflowContents.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Events\\CreateDocflowEvent' => __DIR__ . '/../..' . '/app/Events/CreateDocflowEvent.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DocflowController' => __DIR__ . '/../..' . '/app/Http/Controllers/DocflowController.php',
@@ -526,6 +527,8 @@ class ComposerStaticInit9a70811e51d5064e1e8cd624eef65a47
         'App\\Http\\Middleware\\TrustHosts' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustHosts.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Requests\\CreateDocflowRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CreateDocflowRequest.php',
+        'App\\Listeners\\createDocflowListener' => __DIR__ . '/../..' . '/app/Listeners/createDocflowListener.php',
         'App\\Models\\Attachment' => __DIR__ . '/../..' . '/app/Models/Attachment.php',
         'App\\Models\\Docflow' => __DIR__ . '/../..' . '/app/Models/Docflow.php',
         'App\\Models\\ReestrRequest' => __DIR__ . '/../..' . '/app/Models/ReestrRequest.php',

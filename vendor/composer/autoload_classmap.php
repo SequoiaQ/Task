@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Commands\\DownloadDocflowContents' => $baseDir . '/app/Console/Commands/DownloadDocflowContents.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Events\\CreateDocflowEvent' => $baseDir . '/app/Events/CreateDocflowEvent.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\DocflowController' => $baseDir . '/app/Http/Controllers/DocflowController.php',
@@ -22,6 +23,8 @@ return array(
     'App\\Http\\Middleware\\TrustHosts' => $baseDir . '/app/Http/Middleware/TrustHosts.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Http\\Requests\\CreateDocflowRequest' => $baseDir . '/app/Http/Requests/CreateDocflowRequest.php',
+    'App\\Listeners\\createDocflowListener' => $baseDir . '/app/Listeners/createDocflowListener.php',
     'App\\Models\\Attachment' => $baseDir . '/app/Models/Attachment.php',
     'App\\Models\\Docflow' => $baseDir . '/app/Models/Docflow.php',
     'App\\Models\\ReestrRequest' => $baseDir . '/app/Models/ReestrRequest.php',

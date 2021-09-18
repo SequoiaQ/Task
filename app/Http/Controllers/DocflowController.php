@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateDocflowRequest;
 use App\Models\Docflow;
 use App\Services\KonturService;
-
+use Illuminate\Http\Request;
 
 class DocflowController extends Controller
 {
@@ -14,7 +14,8 @@ class DocflowController extends Controller
     {
         $this->service = new KonturService();
     }
-    function list() {
+    function list() 
+    {
         $allDocflows = Docflow::all();
         return view('docflows.list',[
             'docflows' => $allDocflows
@@ -33,17 +34,16 @@ class DocflowController extends Controller
         return $this->service->refreshDocflowState($docflowId);
     }
 
-    //Создать документооборот
-    function createDocflow(CreateDocflowRequest $request)
-    {
-        $this->service->createDocflow($request['cadastralNumber']);
-        return back();
-    }
-
     //Удалить документооборот
     function deleteDocflow($docflowId)
     {
         return $this->service->deleteDocflowId($docflowId);
     }
 
+    function insertDocflow(Request $request)
+    {
+        $cadastralNumber = $request->input('cadastralNumber');
+        $this->service->insertDocflow($cadastralNumber);
+        return back();
+    }
 }

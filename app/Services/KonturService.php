@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use App\Http\Controllers\Controller;
+use App\Events\CreateDocflowEvent;
 use App\Models\Docflow;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 
-class KonturService extends Controller
+
+class KonturService
 
 {
     private $client;
@@ -30,29 +29,13 @@ class KonturService extends Controller
         ]); 
     }
 
-    //Функция создания документооборота
-    public function createDocflow($cadastralNumber)
-    {
-        try {   //Функция для перехвата ошибок
-            $response = $this->client->request('POST','docflows',[
-                'json' => [
-                "objectExtract" => array(
-                        "extractType" => "Base",
-                        "objects" => [array(
-                            "cadastralNumber" => $cadastralNumber,
-                    )]
-                )
-                ],
-            ]);
-            $responseContents = $response->getBody()->getContents(); 
-            $responseBody = json_decode($responseContents,true); //Декодирование формата json
-            DB::insert('insert into docflows (docflow_state, docflow_id, cadastral_number) values (?, ?, ?)', 
-                [$responseBody['docflowState'], $responseBody['docflowId'], $cadastralNumber]);  // Вызываем SQL запрос с 3 параметрами в таблицу docflows   
-            return 'Docflow saved';
-        } catch (ClientException) { //Тут происходит перехват 
-            return back()->withErrors(['Error'=>'Неправильный кадастровый номер']); 
+
+    //Добавление документооборота 
+    public function insertDocflow(string $cadastralNumber)
+        { 
+            CreateDocflowEvent::dispatch($cadastralNumber);
         }
-    }
+
 
     //Функция обновления состояния 
     public static function refreshAllDocflowStates() { 
@@ -65,7 +48,7 @@ class KonturService extends Controller
             $docflow->save();
         }
     }
-    //Функция обновления состояния документооборота
+    //Функция обновления состояния документооборота по кнопке
     public function refreshDocflowState($docflowId) {
         $response = $this->client->request('GET',"docflows/{$docflowId}");
 
@@ -113,5 +96,4 @@ class KonturService extends Controller
         Storage::disk('public')->put($filename, $contentId ); // Хранение на диске  пр имени файла и контент айди 
         return $filename;
     }
-
 }
