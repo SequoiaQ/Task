@@ -20,7 +20,7 @@
                     <td>{{ $row['is_downloaded'] }}</td>
                     <td>
                         <a onClick="refreshState('{{ $row['docflow_id'] }}')" class="btn btn-info">Обновить данные</a>
-                        <a onClick="deleteDocflowId('{{ $row['docflow_id'] }}')" class="btn btn-danger">Удалить</a>
+                        <a onClick="deleteDocflowId('{{ $row['id'] }}')" class="btn btn-danger">Удалить</a>
                     </td>
                 </tr>
             @endforeach
@@ -144,7 +144,7 @@
                     <td>${downloadButton}</td>
                     <td>
                         <a onClick="refreshState('${item['docflow_id']}')" class="btn btn-info">Обновить данные</a>
-                        <a onClick="deleteDocflowId('${item['docflow_id']}')" class="btn btn-danger" >Удалить</a>
+                        <a onClick="deleteDocflowId('${item['id']}')" class="btn btn-danger" >Удалить</a>
                     </td>
                     <a href="('${item['docflowId']}')" class="btn btn-success">Получить файл</a>
                   </tr>`);

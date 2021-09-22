@@ -6,6 +6,8 @@ use App\Events\CreateDocflowEvent;
 use App\Models\Docflow;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+
 
 
 class KonturService
@@ -29,13 +31,13 @@ class KonturService
         ]); 
     }
 
-
     //Добавление документооборота 
     public function insertDocflow(string $cadastralNumber)
-        { 
-            CreateDocflowEvent::dispatch($cadastralNumber);
-        }
+        {
 
+            $id = DB::table('docflows')->insertGetId(['cadastral_number' => $cadastralNumber]);
+            event(new CreateDocflowEvent ($cadastralNumber, $id));
+        }
 
     //Функция обновления состояния 
     public static function refreshAllDocflowStates() { 
@@ -48,6 +50,7 @@ class KonturService
             $docflow->save();
         }
     }
+    
     //Функция обновления состояния документооборота по кнопке
     public function refreshDocflowState($docflowId) {
         $response = $this->client->request('GET',"docflows/{$docflowId}");
@@ -63,7 +66,7 @@ class KonturService
     //Функция удаления документооборота
     public function deleteDocflowId($docflowId)
     {
-        $docflowInstance = Docflow::where(['docflow_id' =>$docflowId])->first(); // Запрос к таблице docflowId 
+        $docflowInstance = Docflow::where(['id' =>$docflowId])->first(); // Запрос к таблице docflowId 
         $docflowInstance->delete(); // Удаление 
         
         return "Данные удалены";
@@ -77,8 +80,6 @@ class KonturService
         ]);
         return $response->getBody();
     }
-
-    //Функция получения конкретного документооборота
  
 
     //Функция загрузки результатирующего файла по contentId

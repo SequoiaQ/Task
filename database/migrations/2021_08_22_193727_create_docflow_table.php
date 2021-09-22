@@ -15,7 +15,7 @@ class CreateDocflowTable extends Migration
     {
         Schema::create('docflows', function (Blueprint $table) {
             $table->id();
-            $table->string('docflow_id')->nullable(false);
+            $table->string('docflow_id')->nullable();
             $table->string('docflow_state')->nullable();
             $table->string('content_id')->nullable();
             $table->timestamps();
